@@ -108,7 +108,7 @@ private fun ValueAnimator.start(
         addUpdateListener { action(it.animatedValue) }
         animationEnd?.also {
             addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
                     it()
                 }

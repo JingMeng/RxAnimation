@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 android {
+    namespace 'com.mikhaellopez.rxanimation'
+    kotlinOptions { jvmTarget = '11' }
     compileSdkVersion androidCompileSdkVersion
     defaultConfig {
         minSdkVersion androidMinSdkVersion
@@ -12,8 +13,8 @@ android {
         versionName androidVersionName
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     buildTypes {
         release {
@@ -41,7 +42,7 @@ def libVCSUrl = 'https://github.com/lopspower/RxAnimation.git'
 // Generate Source Jar
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier "sources"
+    archiveClassifier = 'sources'
 }
 
 // Create the publication with the pom configuration
@@ -57,26 +58,4 @@ publishing {
     }
 }
 
-// Bintray config
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    publications = ['MyPublication']
-    pkg {
-        repo = "maven"
-        name = "$libGroupId:$libArtifactId"
-        desc = libDesc
-        licenses = libLicenses
-        websiteUrl = libSiteUrl
-        vcsUrl = libVCSUrl
-        version {
-            name = libVersion
-            vcsTag = libVersion
-            released = new Date()
-        }
-    }
-}
-//endregion
